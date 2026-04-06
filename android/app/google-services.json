@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "581097532691",
+    "project_id": "econo-smart-mobile-app",
+    "storage_bucket": "econo-smart-mobile-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581097532691:android:1b2203c417ed8a1864fee6",
+        "android_client_info": {
+          "package_name": "com.example.eco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2gos-Hozn7zwBOM0UWijc3uCTbMCO0AI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

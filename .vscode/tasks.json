@@ -1,0 +1,113 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "flutter run",
+			"type": "shell",
+			"command": "flutter"
+		},
+		{
+			"label": "flutter run",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run"
+			]
+		},
+		{
+			"label": "flutter doctor",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"doctor"
+			]
+		},
+		{
+			"label": "flutter run verbose",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run",
+				"-v"
+			]
+		},
+		{
+			"label": "flutter analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			]
+		},
+		{
+			"label": "flutter analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			]
+		},
+		{
+			"label": "flutter analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			]
+		},
+		{
+			"label": "flutter run",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run"
+			]
+		},
+		{
+			"label": "flutter devices",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"devices"
+			]
+		},
+		{
+			"label": "flutter run chrome",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run",
+				"-d",
+				"chrome"
+			]
+		},
+		{
+			"label": "flutter clean",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"clean"
+			]
+		},
+		{
+			"label": "flutter run chrome",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run",
+				"-d",
+				"chrome"
+			]
+		},
+		{
+			"label": "flutter run chrome",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run",
+				"-d",
+				"chrome"
+			]
+		}
+	]
+}
