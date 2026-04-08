@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:econosmart/app_colors.dart';
 import 'package:econosmart/economic_data_service.dart';
-import 'package:econosmart/news_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:econosmart/floating_chatbot.dart';
+import 'package:econosmart/news_api_service.dart';
+import 'package:econosmart/news_article.dart';
+import 'package:econosmart/news_preview_card.dart';
 
 class GlobalCrisisScreen extends StatefulWidget {
   const GlobalCrisisScreen({super.key});
@@ -14,43 +15,9 @@ class GlobalCrisisScreen extends StatefulWidget {
 
 class _GlobalCrisisScreenState extends State<GlobalCrisisScreen> {
   final _econService = EconomicDataService();
-  final List<CrisisEvent> _events = const [
-    CrisisEvent(
-      tag: 'LOGISTICS',
-      severity: 'HIGH IMPACT',
-      title: 'Red Sea Maritime Tensions',
-      description:
-          'Increased freight costs leading to import duties affecting supply chains.',
-      pressure: 0.185,
-      reserveImpact: '-\$450M Est.',
-      response: 'Active Monitor',
-      color: Color(0xFFECB22E),
-    ),
-    CrisisEvent(
-      tag: 'TRADE',
-      severity: 'MEDIUM',
-      title: 'Global Semiconductor Shortage',
-      description:
-          'Tech export slowdown affecting tax revenue from IT sector across the region.',
-      pressure: 0.072,
-      reserveImpact: '-\$210M Est.',
-      response: 'Active Monitor',
-      color: Color(0xFF6C5DD3),
-    ),
-    CrisisEvent(
-      tag: 'ENERGY',
-      severity: 'CRITICAL',
-      title: 'Oil Production Cuts (OPEC+)',
-      description:
-          'Direct pressure on CPC subsidies and foreign reserves from global supply cuts.',
-      pressure: 0.241,
-      reserveImpact: '-\$450M Est.',
-      response: 'Active Monitor',
-      color: Color(0xFFEF5A5A),
-    ),
-  ];
+  final _apiService = NewsApiService();
 
-  List<NewsModel> _news = [];
+  List<NewsArticle> _news = [];
   bool _loading = true;
   Map<String, double> _rates = {
     'LKR': 320.0,
@@ -70,9 +37,14 @@ class _GlobalCrisisScreenState extends State<GlobalCrisisScreen> {
       _loading = true;
     });
 
-    final news = await _econService.fetchEconomyNews();
     final rates = await _econService.getLiveRates();
     final fuelData = _econService.getSriLankaFuelPrices();
+    List<NewsArticle> news = [];
+    try {
+      news = await _apiService.fetchEconomicNews();
+    } catch (e) {
+      debugPrint('Error fetching news: $e');
+    }
 
     setState(() {
       _news = news;
@@ -144,20 +116,9 @@ class _GlobalCrisisScreenState extends State<GlobalCrisisScreen> {
                       ),
                       const SizedBox(height: 12),
                       _buildImpactGrid(),
-                      const SizedBox(height: 18),
-                      const Text(
-                        'Crisis Tracker',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
-                ..._events.map((event) => _CrisisStrengthCard(event: event)),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -181,8 +142,21 @@ class _GlobalCrisisScreenState extends State<GlobalCrisisScreen> {
                   const Center(
                     child: CircularProgressIndicator(color: AppColors.gold),
                   )
+                else if (_news.isEmpty)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Text('No news available right now.', style: TextStyle(color: Colors.white70)),
+                    ),
+                  )
                 else
-                  ..._news.map((item) => _NewsTile(news: item)),
+                  ..._news.take(10).map((article) => NewsPreviewCard(
+                        title: article.title,
+                        sourceName: article.source,
+                        articleUrl: article.url,
+                        imageUrl: article.imageUrl,
+                        publishedAt: article.date,
+                      )),
               ],
             ),
           ),
@@ -191,7 +165,7 @@ class _GlobalCrisisScreenState extends State<GlobalCrisisScreen> {
     );
   }
 
-  Widget _buildNewsNotification(NewsModel latestNews) {
+  Widget _buildNewsNotification(NewsArticle latestNews) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
@@ -342,28 +316,6 @@ class _GlobalCrisisScreenState extends State<GlobalCrisisScreen> {
   }
 }
 
-class CrisisEvent {
-  final String tag;
-  final String severity;
-  final String title;
-  final String description;
-  final double pressure;
-  final String reserveImpact;
-  final String response;
-  final Color color;
-
-  const CrisisEvent({
-    required this.tag,
-    required this.severity,
-    required this.title,
-    required this.description,
-    required this.pressure,
-    required this.reserveImpact,
-    required this.response,
-    required this.color,
-  });
-}
-
 class _StatusBadgeRow extends StatelessWidget {
   const _StatusBadgeRow();
 
@@ -404,89 +356,6 @@ class _StatusPill extends StatelessWidget {
   }
 }
 
-class _CrisisStrengthCard extends StatelessWidget {
-  final CrisisEvent event;
-  const _CrisisStrengthCard({required this.event});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: AppColors.primaryTeal,
-        boxShadow: const [
-          BoxShadow(
-              color: Colors.black26, blurRadius: 10, offset: Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              _TagChip(label: event.tag, background: Colors.white12),
-              const SizedBox(width: 8),
-              _TagChip(
-                  label: event.severity,
-                  background: event.color.withOpacity(0.18),
-                  color: event.color),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Text(
-            event.title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            event.description,
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 13,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 16),
-          LinearProgressIndicator(
-            value: event.pressure,
-            color: event.color,
-            backgroundColor: Colors.white10,
-            minHeight: 6,
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'PRESSURE: ${(event.pressure * 100).toStringAsFixed(1)}%',
-                style: const TextStyle(color: Colors.white54, fontSize: 12),
-              ),
-              Text(
-                event.reserveImpact,
-                style: const TextStyle(
-                    color: AppColors.gold,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'RESPONSE: ${event.response}',
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _SimpleImpactTile extends StatelessWidget {
   final String title;
   final String value;
@@ -522,102 +391,6 @@ class _SimpleImpactTile extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TagChip extends StatelessWidget {
-  final String label;
-  final Color background;
-  final Color color;
-  const _TagChip({
-    required this.label,
-    required this.background,
-    this.color = Colors.white,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontSize: 11,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
-
-class _NewsTile extends StatelessWidget {
-  final NewsModel news;
-  const _NewsTile({required this.news});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        final uri = Uri.tryParse(news.url);
-        if (uri != null) {
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
-        }
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.primaryTeal.withOpacity(0.92),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  news.source,
-                  style: const TextStyle(
-                    color: AppColors.gold,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  news.pubDate,
-                  style: const TextStyle(color: Colors.white38, fontSize: 10),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              news.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              news.description,
-              style: const TextStyle(
-                color: Colors.white60,
-                fontSize: 12,
-                height: 1.4,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
