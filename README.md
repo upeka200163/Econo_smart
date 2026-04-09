@@ -40,7 +40,7 @@ Follow these steps to set up the project locally on your machine.
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/kdsmaduranga/Econo_smart](https://github.com/kdsmaduranga/Econo_smart.git)
+   git clone https://github.com/kdsmaduranga/Econo_smart.git
    cd Econo_smart
    ```
 
@@ -78,34 +78,34 @@ Follow these steps to set up the project locally on your machine.
     <td align="center">
       <img src="img/signin.jpeg" width="250" height="500" alt="SignIn" style="object-fit: cover; border-radius: 8px;" />
       <br />
-      <em>Dashboard</em>
+      <em>SignIn</em>
     </td>
     <td align="center">
-      <img src="img/Signup.jpeg" width="250" height="500" alt="SignUp" style="object-fit: cover; border-radius: 8px;" />
+      <img src="img/signup.jpeg" width="250" height="500" alt="SignUp" style="object-fit: cover; border-radius: 8px;" />
       <br />
-      <em>Exchange Rates</em>
+      <em>SignUp</em>
     </td>
     <td align="center">
       <img src="img/home.jpeg" width="250" height="500" alt="Home" style="object-fit: cover; border-radius: 8px;" />
       <br />
-      <em>Gold Prices</em>
+      <em>Home Screen</em>
     </td>
   </tr>
   <tr>
     <td align="center">
       <img src="img/news.jpeg" width="250" height="500" alt="Market News" style="object-fit: cover; border-radius: 8px;" />
       <br />
-      <em>Market Charts</em>
+      <em>Crisis Lab</em>
     </td>
     <td align="center">
       <img src="img/money.jpeg" width="250" height="500" alt="Income and Expenses" style="object-fit: cover; border-radius: 8px;" />
       <br />
-      <em>News Feed</em>
+      <em>Income and Expense Tracker</em>
     </td>
     <td align="center">
       <img src="img/ai.jpeg" width="250" height="500" alt="AI Chatbot" style="object-fit: cover; border-radius: 8px;" />
       <br />
-      <em>Expense Tracker</em>
+      <em>AI Assistance</em>
     </td>
   </tr>
 </table>
