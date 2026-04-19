@@ -1,10 +1,10 @@
-# 📊 Econo Smart Lanka
+# 📊 Econo Smart Lanka.
 
 **Econo Smart Lanka** is a comprehensive mobile application designed to simplify personal money management and keep you updated with the latest financial markets. Built with Flutter and powered by Firebase, the app provides real-time economic insights by integrating multiple financial APIs. Track your expenses, monitor live exchange and gold rates, and analyze global markets with interactive charts and curated news feeds—all in one place.
 
 ---
 
-## ✨ Features
+## ✨ Features.
 
 * **Personal Finance Management:** Track your daily income and expenses seamlessly to stay on top of your financial health.
 * **Real-Time Exchange Rates:** View the latest global currency exchange rates instantly.
@@ -14,7 +14,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack.
 
 * **Frontend:** [Flutter](https://flutter.dev/) (Dart) for a seamless cross-platform experience (iOS & Android).
 * **Backend & Database:** [Firebase](https://firebase.google.com/) (Firestore, Realtime Database, and Authentication).
@@ -27,7 +27,7 @@
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started.
 
 Follow these steps to set up the project locally on your machine.
 
@@ -36,7 +36,7 @@ Follow these steps to set up the project locally on your machine.
 * A Firebase project set up via the Firebase Console.
 * API keys registered for all the services mentioned in the Tech Stack.
 
-### Installation
+### Installation.
 
 1. **Clone the repository:**
    ```bash
@@ -71,7 +71,7 @@ Follow these steps to set up the project locally on your machine.
 
 ---
 
-## 📱 Preview
+## 📱 Preview.
 
 <table>
   <tr>
